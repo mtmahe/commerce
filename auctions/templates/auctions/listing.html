@@ -1,0 +1,16 @@
+{% extends "auctions/layout.html" %}
+
+{% block title %}
+  {{ listing.title }}
+{% endblock %}
+
+{% block body %}
+  <article class="media content-section">
+    <img class="listing-image" src="{{ listing.image_url }}" alt="Item image.">
+    <div class="media-body listing-body">
+      <h2 class="listing-title">{{ listing.title }}</h2>
+      <p class="listing-description">{{ listing.description }}</p>
+      <p>Starting bid: {{ listing.starting_bid }}</p>
+    </div>
+  </article>
+{% endblock %}

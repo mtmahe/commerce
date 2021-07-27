@@ -1,0 +1,41 @@
+body {
+    padding: 10px;
+}
+
+link, li {
+  list-style-type: none;
+}
+
+a {
+  color: DimGrey;
+}
+
+a:hover {
+  color: DarkSlateGray;
+}
+
+.article-title {
+  color: #444444;
+}
+
+.content-section {
+  background: #ffffff;
+  border: 1px solid #dddddd;
+  border-radius: .2em;
+  padding: .5em;
+  margin-bottom: 1em;
+}
+
+.index-image {
+  border-radius: 1em;
+  height: 65px;
+  width: 65px;
+  margin-right: 16px;
+}
+
+.listing-image {
+  border-radius: 0.5em;
+  max-width: 25%;
+  max-height: 15%;
+  margin-right: 16px;
+}
