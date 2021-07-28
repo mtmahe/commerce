@@ -1,0 +1,16 @@
+{% extends "auctions/layout.html" %}
+
+{% block title %}
+  {{ listing.title }}
+{% endblock %}
+
+{% block body %}
+  <div>
+    <p>Are you sure you wish to close this listing? This cannot be undone.</p>
+    <form class="" method="post">
+      {% csrf_token %}
+      <button class="warn-button" type="submit" name="close-button">Close Listing</button>
+    </form>
+    <a href="{% url 'index' %}">Ooops, go back!</a>
+  </div>
+{% endblock %}

@@ -29,6 +29,7 @@ class Listing(models.Model):
     starting_bid = models.DecimalField(max_digits=9, decimal_places=2)
     image_url = models.URLField(max_length=64)
     category = models.CharField(max_length=2, choices = category_choices, default=CLOTHING)
+    active = models.BooleanField(default=True)
 
     def __str__(self):
         return f"Owner: {self.owner.username} First: {self.owner.first_name} Title: {self.title}"

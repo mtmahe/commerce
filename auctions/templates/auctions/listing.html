@@ -13,4 +13,11 @@
       <p>Starting bid: {{ listing.starting_bid }}</p>
     </div>
   </article>
+  <div class="content-section">
+    {% if listing.active %}
+      <input type="submit" name="submit-bid" value="Bid">
+    {% else %}
+      <p>Sold!</p>
+    {% endif %}
+  </div>
 {% endblock %}

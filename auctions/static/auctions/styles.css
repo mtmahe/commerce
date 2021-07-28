@@ -1,3 +1,8 @@
+:root {
+  --pinky: #ff6666;
+  --red:#ff0000;
+}
+
 body {
     padding: 10px;
 }
@@ -38,4 +43,13 @@ a:hover {
   max-width: 25%;
   max-height: 15%;
   margin-right: 16px;
+}
+
+.warn-button {
+  background-color: var(--pinky);
+
+}
+
+.warn-button:hover {
+  background-color: var(--red);
 }

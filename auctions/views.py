@@ -125,3 +125,24 @@ class ListingUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         if self.request.user == listing.owner:
             return True
         return False
+
+
+def close_auction_view(request, pk):
+    """ Option to close the listing setting active to false."""
+
+    if request.method == "POST":
+        listing = Listing.objects.get(pk=pk)
+
+        if listing.owner != request.user:
+            raise Http404("You are not the owner of that listing.")
+        listing.active = False
+        listing.save()
+
+        return render(request, "auctions/listing.html", {
+            "pk": pk
+        })
+
+
+    return render(request, "auctions/close.html", {
+        "pk": pk
+    })
