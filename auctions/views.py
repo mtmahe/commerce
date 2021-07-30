@@ -14,7 +14,13 @@ from django.forms import ModelForm, Textarea
 
 from django.views.generic import CreateView, ListView, DetailView, UpdateView
 
-from .models import User, Listing, NewListingForm
+from .models import (
+    User,
+    Listing,
+    NewListingForm,
+    Bid,
+    NewBidForm
+)
 
 
 
@@ -85,14 +91,31 @@ def register(request):
         return render(request, "auctions/register.html")
 
 
-def listing(request, listing_title):
+def listing(request, pk):
+    """ Show the listing. If owned, can close. If open, can bid or comment. """
     try:
-        listing = Listing.objects.get(title=listing_title)
+        listing = Listing.objects.get(pk=pk)
     except Listing.DoesNotExist:
         raise Http404("Listing not found.")
+
+    if request.method == 'POST':
+        if 'submit-bid' in request.POST:
+            newBidForm = NewBidForm(request.POST)
+            newBidForm.instance.bidder = request.user
+            newBidForm.instance.listing_id = listing
+            if newBidForm.is_valid():
+                newBidForm.save()
+        #elfi 'submit-comment' in request.Post:
+            # Comment stuff goes here
+
+    else:
+        newBidForm = NewBidForm()
+        #commentForm = CommentForm()
+
     return render(request, "auctions/listing.html", {
-        "title": listing_title,
-        "listing": listing
+        "listing": listing,
+        "pk": pk,
+        "newBidForm": newBidForm
     })
 
 

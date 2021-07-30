@@ -1,5 +1,6 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django import forms
 from django.forms import ModelForm
 from django.urls import reverse
 
@@ -43,3 +44,21 @@ class NewListingForm(ModelForm):
     class Meta:
         model = Listing
         fields = ['owner', 'title', 'description', 'starting_bid', 'image_url', 'category']
+
+
+class Bid(models.Model):
+    """ Keep track of all bids. """
+
+    listing_id = models.ForeignKey(Listing, on_delete=models.CASCADE, related_name="the_bid")
+    bidder = models.ForeignKey(User, on_delete=models.CASCADE, related_name="the_bidder")
+    bid = models.DecimalField(max_digits=9, decimal_places=2) #make sure higher than previous bid
+
+    def __str__(self):
+        return self.bid
+
+class NewBidForm(forms.ModelForm):
+    """ form for bid """
+
+    class Meta:
+        model = Bid
+        fields = ['bid']

@@ -13,11 +13,23 @@
       <p>Starting bid: {{ listing.starting_bid }}</p>
     </div>
   </article>
+
   <div class="content-section">
     {% if listing.active %}
-      <input type="submit" name="submit-bid" value="Bid">
+      <form action="" method="post">
+        {% csrf_token %}
+        {{ newBidForm }}
+        <input type="submit" name="submit-bid" value="Bid">
+      </form>
     {% else %}
       <p>Sold!</p>
     {% endif %}
   </div>
+
+  {% if object.owner == user %}
+    <div class="content-section">
+      <p>You're the owner!</p>
+    </div>
+  {% endif %}
+
 {% endblock %}
