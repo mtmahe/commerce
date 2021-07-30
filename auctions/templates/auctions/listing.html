@@ -5,6 +5,9 @@
 {% endblock %}
 
 {% block body %}
+
+  {% include 'auctions/includes/messages.html' %}
+
   <article class="media content-section">
     <img class="listing-image" src="{{ listing.image_url }}" alt="Item image.">
     <div class="media-body listing-body">
