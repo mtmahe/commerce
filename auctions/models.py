@@ -54,7 +54,7 @@ class Bid(models.Model):
     bid = models.DecimalField(max_digits=9, decimal_places=2) #make sure higher than previous bid
 
     def __str__(self):
-        return self.bid
+        return f"Listing id: {self.listing_id.id} Bidder: {self.bidder.username} Bid: {self.bid}"
 
 class NewBidForm(forms.ModelForm):
     """ form for bid """

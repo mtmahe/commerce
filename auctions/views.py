@@ -114,10 +114,22 @@ def listing(request, pk):
         newBidForm = NewBidForm()
         #commentForm = CommentForm()
 
+    # Get current highest bid, first value is starting_bid
+    try:
+        current_price = Bid.objects.filter(listing_id=pk).order_by('-id')[0].bid
+    except:
+        current_price = listing.starting_bid
+
+    # Number of bids
+    bid_count = Bid.objects.filter(listing_id=pk).count()
+
+
     return render(request, "auctions/listing.html", {
         "listing": listing,
         "pk": pk,
-        "newBidForm": newBidForm
+        "newBidForm": newBidForm,
+        "current_price": current_price,
+        "bid_count": bid_count,
     })
 
 

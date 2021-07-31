@@ -13,7 +13,9 @@
     <div class="media-body listing-body">
       <h2 class="listing-title">{{ listing.title }}</h2>
       <p class="listing-description">{{ listing.description }}</p>
-      <p>Starting bid: {{ listing.starting_bid }}</p>
+      <p>Starting Price: {{ listing.starting_bid }}</p>
+      <strong>Current Bid: {{ current_price }}</strong>
+      <p>Bids so far: {{ bid_count }}</p>
     </div>
   </article>
 
