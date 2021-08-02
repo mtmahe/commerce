@@ -38,7 +38,28 @@
   {% endif %}
 
   <div class="content-section">
-    Todo, comments go here...
+    <div>
+      {% for comment in comments %}
+        <article class="content-section">
+          <div>
+            <strong>{{ comment.commenter }}: </strong>
+          </div>
+          <div>
+            {{ comment.contents }}
+          </div>
+        </article>
+      {% empty %}
+        Be the first to comment!
+      {% endfor %}
+    </div>
+    <div>
+      New comment:
+      <form action="" method="post">
+        {% csrf_token %}
+        {{ newCommentForm }}
+        <input type="submit" name="submit-comment" value="Comment">
+      </form>
+    </div>
   </div>
 
 {% endblock %}

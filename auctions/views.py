@@ -20,7 +20,9 @@ from .models import (
     Listing,
     NewListingForm,
     Bid,
-    NewBidForm
+    NewBidForm,
+    Comment,
+    NewCommentForm
 )
 
 
@@ -109,6 +111,7 @@ def listing(request, pk):
             newBidForm = NewBidForm(request.POST)
             newBidForm.instance.bidder = request.user
             newBidForm.instance.listing_id = listing
+            newCommentForm = NewCommentForm()
             if newBidForm.is_valid():
                 new_bid = newBidForm.cleaned_data['bid']
 
@@ -129,12 +132,20 @@ def listing(request, pk):
                         messages.error(request, 'Error: First bid must be greater than or equal to starting price.')
 
         # Or are they submitting a comment?
-        #elif 'submit-comment' in request.Post:
-            # Comment stuff goes here
+        elif 'submit-comment' in request.POST:
+            newCommentForm = NewCommentForm(request.POST)
+            newCommentForm.instance.listing_id = listing
+            newCommentForm.instance.commenter = request.user
+            newBidForm = NewBidForm()
+            if newCommentForm.is_valid():
+                newCommentForm.save()
+                messages.success(request, 'Comment saved successfully.')
+            else:
+                messages.error(request, 'Error: Please only enter text and punctuation in comment.')
 
     else:
         newBidForm = NewBidForm()
-        #commentForm = CommentForm()
+        newCommentForm = NewCommentForm()
 
     # Get current highest bid, first value is starting_bid
     try:
@@ -144,6 +155,8 @@ def listing(request, pk):
 
     # Number of bids
     bid_count = Bid.objects.filter(listing_id=pk).count()
+    # Comments
+    comments = Comment.objects.filter(listing_id=pk)
 
 
     return render(request, "auctions/listing.html", {
@@ -152,6 +165,8 @@ def listing(request, pk):
         "newBidForm": newBidForm,
         "current_price": current_price,
         "bid_count": bid_count,
+        "comments": comments,
+        "newCommentForm": newCommentForm,
     })
 
 

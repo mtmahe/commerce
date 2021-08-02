@@ -56,9 +56,24 @@ class Bid(models.Model):
     def __str__(self):
         return f"Listing id: {self.listing_id.id} Bidder: {self.bidder.username} Bid: {self.bid}"
 
+
 class NewBidForm(forms.ModelForm):
     """ form for bid """
 
     class Meta:
         model = Bid
         fields = ['bid']
+
+
+class Comment(models.Model):
+    """ A table for comments on each listing page. """
+
+    listing_id = models.ForeignKey(Listing, on_delete=models.CASCADE, related_name="comment_listing")
+    commenter = models.ForeignKey(User, on_delete=models.CASCADE, related_name="comment_commenter")
+    contents = models.TextField(max_length=900, verbose_name="", help_text="")
+
+
+class NewCommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ['contents']
