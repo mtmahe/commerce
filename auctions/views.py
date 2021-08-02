@@ -93,21 +93,43 @@ def register(request):
 
 
 def listing(request, pk):
-    """ Show the listing. If owned, can close. If open, can bid or comment. """
+    """ Show the listing. If owned, can close. If open, can bid or comment.
+    If a first bid is received must be >= starting price. If there has already
+    been a bid, the new bid must be greater. """
     try:
         listing = Listing.objects.get(pk=pk)
     except Listing.DoesNotExist:
         raise Http404("Listing not found.")
 
+
     if request.method == 'POST':
+
+        # Are they submitting a bid?
         if 'submit-bid' in request.POST:
             newBidForm = NewBidForm(request.POST)
             newBidForm.instance.bidder = request.user
             newBidForm.instance.listing_id = listing
             if newBidForm.is_valid():
-                newBidForm.save()
-                messages.success(request, 'Bid saved successfully.')
-        #elfi 'submit-comment' in request.Post:
+                new_bid = newBidForm.cleaned_data['bid']
+
+                # Check if there has been a bid yet.
+                if Bid.objects.filter(listing_id=pk).count() > 0:
+                    previous_bid = Bid.objects.filter(listing_id=pk).order_by('-id')[0].bid
+                    if new_bid > previous_bid:
+                        newBidForm.save()
+                        messages.success(request, 'Bid saved successfully.')
+                    else:
+                        messages.error(request, 'Error: New bid must be greater than previous bid.')
+                else:
+                    starting_price = listing.starting_bid
+                    if new_bid >= starting_price:
+                        newBidForm.save()
+                        messages.success(request, 'Bid saved successfully.')
+                    else:
+                        messages.error(request, 'Error: First bid must be greater than or equal to starting price.')
+
+        # Or are they submitting a comment?
+        #elif 'submit-comment' in request.Post:
             # Comment stuff goes here
 
     else:
