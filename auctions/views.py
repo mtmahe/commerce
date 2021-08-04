@@ -96,7 +96,7 @@ def register(request):
 
 def listing(request, pk):
     """ Show the listing. If owned, can close. If open, can bid or comment.
-    
+
     If a first bid is received must be >= starting price. If there has already
     been a bid, the new bid must be greater. """
 
@@ -151,9 +151,13 @@ def listing(request, pk):
 
     # Get current highest bid, first value is starting_bid
     try:
-        current_price = Bid.objects.filter(listing_id=pk).order_by('-id')[0].bid
+        highest_bid = Bid.objects.filter(listing_id=pk).order_by('-id')[0]
+        current_price = highest_bid.bid
+        high_bidder = highest_bid.bidder
+        #current_price = Bid.objects.filter(listing_id=pk).order_by('-id')[0].bid
     except:
         current_price = listing.starting_bid
+        high_bidder = None
 
     # Number of bids
     bid_count = Bid.objects.filter(listing_id=pk).count()
@@ -168,6 +172,7 @@ def listing(request, pk):
         "bid_count": bid_count,
         "comments": comments,
         "newCommentForm": newCommentForm,
+        "high_bidder": high_bidder
     })
 
 

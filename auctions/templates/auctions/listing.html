@@ -32,11 +32,13 @@
       {% endif %}
     {% else %}
       <p>Sold!</p>
+      {% if high_bidder == user %}
+        <p>Congratulations! You won!</p>
+      {% endif %}
     {% endif %}
-
-
   </div>
 
+  <!-- Comments section -->
   {% if listing.active %}
     <div class="content-section">
       <div>
