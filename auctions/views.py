@@ -15,15 +15,7 @@ from django.forms import ModelForm, Textarea
 
 from django.views.generic import CreateView, ListView, DetailView, UpdateView
 
-from .models import (
-    User,
-    Listing,
-    NewListingForm,
-    Bid,
-    NewBidForm,
-    Comment,
-    NewCommentForm
-)
+from .models import *
 
 
 
@@ -145,6 +137,22 @@ def listing(request, pk):
             else:
                 messages.error(request, 'Error: Please only enter text and punctuation in comment.')
 
+        # Or are they toggling watchlist?
+        elif 'watch-button' in request.POST:
+            if not Watchlist.objects.filter(user=request.user):
+                watchlist = Watchlist()
+                watchlist.listing = listing
+                watchlist.user = request.user
+                watchlist.save()
+                messages.success(request, 'Saved to Watchlist')
+            else:
+                print('unsaving')
+                Watchlist.objects.filter(user=request.user).delete()
+                messages.success(request, 'Removed from Watchlist')
+            newBidForm = NewBidForm()
+            newCommentForm = NewCommentForm()
+
+    # It's GET
     else:
         newBidForm = NewBidForm()
         newCommentForm = NewCommentForm()

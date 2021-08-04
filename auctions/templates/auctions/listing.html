@@ -12,6 +12,13 @@
     <img class="listing-image" src="{{ listing.image_url }}" alt="Item image.">
     <div class="media-body listing-body">
       <h2 class="listing-title">{{ listing.title }}</h2>
+      <!-- add to watchlist -->
+      {% if request.user.is_authenticated %}
+        <form action="" method="post">
+          {% csrf_token %}
+          <button type="submit" name="watch-button">Watchlist</button>
+        </form>
+      {% endif %}
       <p class="listing-description">{{ listing.description }}</p>
       <strong>Current Bid: {{ current_price }}</strong>
       <p>Bids so far: {{ bid_count }}</p>

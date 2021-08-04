@@ -84,3 +84,13 @@ class NewCommentForm(forms.ModelForm):
     class Meta:
         model = Comment
         fields = ['contents']
+
+
+class Watchlist(models.Model):
+    """ A table for watch list. """
+
+    listing = models.ForeignKey(Listing, on_delete=models.CASCADE, related_name="the_watched_listing")
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="the_watcher")
+
+    def __str__(self):
+        return f"{self.watcher.username} watching {self.listing.id}"
