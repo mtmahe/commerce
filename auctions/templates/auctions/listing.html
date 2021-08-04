@@ -13,29 +13,29 @@
     <div class="media-body listing-body">
       <h2 class="listing-title">{{ listing.title }}</h2>
       <p class="listing-description">{{ listing.description }}</p>
-      <p>Starting Price: {{ listing.starting_bid }}</p>
       <strong>Current Bid: {{ current_price }}</strong>
       <p>Bids so far: {{ bid_count }}</p>
     </div>
   </article>
 
+  <!-- bid or close bid section -->
   <div class="content-section">
     {% if listing.active %}
-      <form action="" method="post">
-        {% csrf_token %}
-        {{ newBidForm }}
-        <input type="submit" name="submit-bid" value="Bid">
-      </form>
+      {% if listing.owner == user %}
+        <a class="btn btn-danger" href="../../listing/{{ listing.pk }}/close">Close Auction</a>
+      {% else %}
+        <form action="" method="post">
+          {% csrf_token %}
+          {{ newBidForm }}
+          <input type="submit" name="submit-bid" value="Bid">
+        </form>
+      {% endif %}
     {% else %}
       <p>Sold!</p>
     {% endif %}
-  </div>
 
-  {% if object.owner == user %}
-    <div class="content-section">
-      <p>You're the owner!</p>
-    </div>
-  {% endif %}
+
+  </div>
 
   <div class="content-section">
     <div>

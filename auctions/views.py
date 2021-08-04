@@ -96,8 +96,10 @@ def register(request):
 
 def listing(request, pk):
     """ Show the listing. If owned, can close. If open, can bid or comment.
+    
     If a first bid is received must be >= starting price. If there has already
     been a bid, the new bid must be greater. """
+
     try:
         listing = Listing.objects.get(pk=pk)
     except Listing.DoesNotExist:
@@ -115,7 +117,7 @@ def listing(request, pk):
             if newBidForm.is_valid():
                 new_bid = newBidForm.cleaned_data['bid']
 
-                # Check if there has been a bid yet.
+                # Check if there has already been a bid then use correct rule.
                 if Bid.objects.filter(listing_id=pk).count() > 0:
                     previous_bid = Bid.objects.filter(listing_id=pk).order_by('-id')[0].bid
                     if new_bid > previous_bid:
@@ -157,7 +159,6 @@ def listing(request, pk):
     bid_count = Bid.objects.filter(listing_id=pk).count()
     # Comments
     comments = Comment.objects.filter(listing_id=pk)
-
 
     return render(request, "auctions/listing.html", {
         "listing": listing,
@@ -204,18 +205,20 @@ class ListingUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 def close_auction_view(request, pk):
     """ Option to close the listing setting active to false."""
 
+    print("hello")
+
     if request.method == "POST":
         listing = Listing.objects.get(pk=pk)
 
         if listing.owner != request.user:
             raise Http404("You are not the owner of that listing.")
+
+        print("got here")
         listing.active = False
         listing.save()
 
-        return render(request, "auctions/listing.html", {
-            "pk": pk
-        })
-
+        url = reverse('listing', kwargs={'pk': pk})
+        return HttpResponseRedirect(url)
 
     return render(request, "auctions/close.html", {
         "pk": pk

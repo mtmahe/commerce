@@ -46,6 +46,13 @@ class NewListingForm(ModelForm):
         fields = ['owner', 'title', 'description', 'starting_bid', 'image_url', 'category']
 
 
+class CloseListingForm(ModelForm):
+
+    class Meta:
+        model = Listing
+        fields = []
+
+
 class Bid(models.Model):
     """ Keep track of all bids. """
 
