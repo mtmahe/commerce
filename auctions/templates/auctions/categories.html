@@ -2,6 +2,13 @@
 
 {% block body %}
     <h2>Categories</h2>
+    <div class="content-section">
+      <form action="" method="post">
+        {% csrf_token %}
+        {{ selectCategoryForm }}
+        <input type="submit" name="category-button" value="Select">
+      </form>
+    </div>
 
     {% for listing in listings %}
       {% if listing.active %}

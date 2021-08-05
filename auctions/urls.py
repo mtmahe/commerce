@@ -1,9 +1,9 @@
 from django.urls import path
-from .views import ListingCreateView, ListingListView, ListingDetailView
+from .views import ListingCreateView
 from . import views
 
 urlpatterns = [
-    path("", ListingListView.as_view(), name="index"),
+    path("", views.index, name="index"),
     path("login", views.login_view, name="login"),
     path("logout", views.logout_view, name="logout"),
     path("register", views.register, name="register"),

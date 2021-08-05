@@ -53,6 +53,14 @@ class CloseListingForm(ModelForm):
         fields = []
 
 
+class SelectCategoryForm(forms.ModelForm):
+    """ Offer choice of categories. """
+
+    class Meta:
+        model = Listing
+        fields = ['category']
+
+
 class Bid(models.Model):
     """ Keep track of all bids. """
 

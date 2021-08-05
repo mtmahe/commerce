@@ -3,15 +3,14 @@
 {% block body %}
     <h2>Active Listings</h2>
     {% for listing in listings %}
-      {% if listing.active %}
-        <article class="media content-section">
-          <img class="index-image align-self-center" src="{{ listing.image_url }}" alt="Item image.">
-          <div class="media-body listing-body">
-            <h2 class="article-title"><a href="listing/{{ listing.pk }}">{{ listing.title }}</a></h2>
-            <p>{{ listing.description }}</p>
-          </div>
-        </article>
-      {% endif %}
+      <article class="media content-section">
+        <img class="index-image align-self-center" src="{{ listing.image_url }}" alt="Item image.">
+        <div class="media-body listing-body">
+          <h2 class="article-title"><a href="listing/{{ listing.pk }}">{{ listing.title }}</a></h2>
+          <p>{{ listing.description }}</p>
+          <p><strong>${{ listing.price }}</strong></p>
+        </div>
+      </article>
     {% empty %}
       <p>There are no active listings!</p>
     {% endfor %}

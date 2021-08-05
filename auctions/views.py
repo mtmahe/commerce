@@ -16,21 +16,23 @@ from django.forms import ModelForm, Textarea
 from django.views.generic import CreateView, ListView, DetailView, UpdateView
 
 from .models import *
+from .utils import *
 
 
 
 def index(request):
+    """ Displays all current active listings with a summary. """
+
+    listings = []
+    all_listings = Listing.objects.filter(active=True)
+    for listing in all_listings:
+        pk = listing.pk
+        price = query_price(pk)
+        listing.price = price
+
     return render(request, "auctions/index.html", {
-        "listings": Listing.objects.all()
+        "listings": all_listings,
     })
-
-
-class ListingListView(ListView):
-    """ list our active posts """
-
-    model = Listing
-    template_name = 'auctions/index.html'
-    context_object_name = 'listings'
 
 
 def login_view(request):
@@ -157,15 +159,8 @@ def listing(request, pk):
         newBidForm = NewBidForm()
         newCommentForm = NewCommentForm()
 
-    # Get current highest bid, first value is starting_bid
-    try:
-        highest_bid = Bid.objects.filter(listing_id=pk).order_by('-id')[0]
-        current_price = highest_bid.bid
-        high_bidder = highest_bid.bidder
-        #current_price = Bid.objects.filter(listing_id=pk).order_by('-id')[0].bid
-    except:
-        current_price = listing.starting_bid
-        high_bidder = None
+    current_price = query_price(pk)
+    high_bidder = query_high_bidder(pk)
 
     # Number of bids
     bid_count = Bid.objects.filter(listing_id=pk).count()
@@ -245,13 +240,18 @@ def watchlist(request):
 
 
 def categories(request):
+    """ Give a view of active listings by category """
 
     if request.method == "POST":
-        Todo
+        selectCategoryForm = SelectCategoryForm(request.POST)
+        if selectCategoryForm.is_valid():
+            selected_category = selectCategoryForm.cleaned_data['category']
 
-    else:
-        choice = 'CL'
+    else: # It must be GET
+        selected_category = 'CL'
+        selectCategoryForm = SelectCategoryForm()
 
     return render(request, "auctions/categories.html", {
-        "listings": Listing.objects.filter(category=choice),
+        "listings": Listing.objects.filter(category=selected_category),
+        "selectCategoryForm": selectCategoryForm,
     })
