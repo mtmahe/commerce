@@ -242,3 +242,16 @@ def watchlist(request):
     return render(request, "auctions/watchlist.html", {
         "watches": Watchlist.objects.all()
     })
+
+
+def categories(request):
+
+    if request.method == "POST":
+        Todo
+
+    else:
+        choice = 'CL'
+
+    return render(request, "auctions/categories.html", {
+        "listings": Listing.objects.filter(category=choice),
+    })
