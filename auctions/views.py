@@ -179,14 +179,6 @@ def listing(request, pk):
     })
 
 
-class ListingDetailView(LoginRequiredMixin, DetailView):
-    """ list our active posts """
-
-    model = Listing
-    template_name = 'auctions/listing.html'
-    context_object_name = 'listing'
-
-
 class ListingCreateView(LoginRequiredMixin, CreateView):
     """ Create a new listing. """
 
@@ -198,16 +190,6 @@ class ListingCreateView(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         form.instance.owner = self.request.user
         return super().form_valid(form)
-
-
-class ListingUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
-    """ Allow owner to close the auction, setting highest bidder as winner. """
-
-    def test_func(self):
-        listing = self.get_object()
-        if self.request.user == listing.owner:
-            return True
-        return False
 
 
 def close_auction_view(request, pk):
@@ -234,6 +216,8 @@ def close_auction_view(request, pk):
 
 
 def watchlist(request):
+    """ Show summary page for items being watched """
+    
     return render(request, "auctions/watchlist.html", {
         "watches": Watchlist.objects.all()
     })
