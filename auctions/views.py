@@ -10,7 +10,7 @@ from django.http import (
 )
 from django.shortcuts import render
 from django.urls import reverse#
-from django import forms
+from django import forms, template
 from django.forms import ModelForm, Textarea
 
 from django.views.generic import CreateView, ListView, DetailView, UpdateView
@@ -242,16 +242,3 @@ def watchlist(request):
     return render(request, "auctions/watchlist.html", {
         "watches": Watchlist.objects.all()
     })
-
-
-class WatchlistDetailView(LoginRequiredMixin, DetailView):
-    """ list our active posts """
-
-    model = Watchlist
-    template_name = 'auctions/watchlist.html'
-    context_object_name = 'listings'
-
-    def get_queryset(self):
-        the_user = request.user
-        print(user)
-        return Watchlist.objects.filter(user=the_user)

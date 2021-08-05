@@ -13,7 +13,7 @@
     <div class="media-body listing-body">
       <h2 class="listing-title">{{ listing.title }}</h2>
       <!-- add to watchlist -->
-      {% if request.user.is_authenticated %}
+      {% if request.user.is_authenticated and listing.active %}
         <form action="" method="post">
           {% csrf_token %}
           <button type="submit" name="watch-button">Watchlist</button>
