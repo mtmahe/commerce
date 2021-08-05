@@ -46,13 +46,6 @@ class NewListingForm(ModelForm):
         fields = ['owner', 'title', 'description', 'starting_bid', 'image_url', 'category']
 
 
-class CloseListingForm(ModelForm):
-
-    class Meta:
-        model = Listing
-        fields = []
-
-
 class SelectCategoryForm(forms.ModelForm):
     """ Offer choice of categories. """
 
