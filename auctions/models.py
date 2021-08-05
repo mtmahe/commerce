@@ -93,4 +93,7 @@ class Watchlist(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="the_watcher")
 
     def __str__(self):
-        return f"{self.watcher.username} watching {self.listing.id}"
+        return f"{self.user.username} watching {self.listing.id}"
+
+    def get_absolute_url(self):
+        return reverse('watchlist-view', kwargs={'pk': self.pk})

@@ -1,0 +1,16 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h2>Watchlist</h2>
+    {% for watch in watches %}
+      <article class="media content-section">
+        <img class="index-image align-self-center" src="{{ watch.listing.image_url }}" alt="Item image.">
+        <div class="media-body listing-body">
+          <h2 class="article-title"><a href="listing/{{ watch.listing.pk }}">{{ watch.listing.title }}</a></h2>
+          <p>{{ watch.listing.description }}</p>
+        </div>
+      </article>
+    {% empty %}
+      <p>You aren't watching anything yet...</p>
+    {% endfor %}
+{% endblock %}

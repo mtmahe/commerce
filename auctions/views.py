@@ -139,7 +139,7 @@ def listing(request, pk):
 
         # Or are they toggling watchlist?
         elif 'watch-button' in request.POST:
-            if not Watchlist.objects.filter(user=request.user):
+            if not Watchlist.objects.filter(user=request.user, listing=listing):
                 watchlist = Watchlist()
                 watchlist.listing = listing
                 watchlist.user = request.user
@@ -236,3 +236,22 @@ def close_auction_view(request, pk):
     return render(request, "auctions/close.html", {
         "pk": pk
     })
+
+
+def watchlist(request):
+    return render(request, "auctions/watchlist.html", {
+        "watches": Watchlist.objects.all()
+    })
+
+
+class WatchlistDetailView(LoginRequiredMixin, DetailView):
+    """ list our active posts """
+
+    model = Watchlist
+    template_name = 'auctions/watchlist.html'
+    context_object_name = 'listings'
+
+    def get_queryset(self):
+        the_user = request.user
+        print(user)
+        return Watchlist.objects.filter(user=the_user)
