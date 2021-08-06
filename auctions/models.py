@@ -1,15 +1,12 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django import forms
-from django.forms import ModelForm
 from django.urls import reverse
 
 
 
 class User(AbstractUser):
     pass
-    #def __str__(self):
-    #    return str(self.username)
 
 
 class Listing(models.Model):
@@ -39,21 +36,6 @@ class Listing(models.Model):
         return reverse('listing', kwargs={'pk': self.pk})
 
 
-class NewListingForm(ModelForm):
-
-    class Meta:
-        model = Listing
-        fields = ['owner', 'title', 'description', 'starting_bid', 'image_url', 'category']
-
-
-class SelectCategoryForm(forms.ModelForm):
-    """ Offer choice of categories. """
-
-    class Meta:
-        model = Listing
-        fields = ['category']
-
-
 class Bid(models.Model):
     """ Keep track of all bids. """
 
@@ -65,26 +47,12 @@ class Bid(models.Model):
         return f"Listing id: {self.listing_id.id} Bidder: {self.bidder.username} Bid: {self.bid}"
 
 
-class NewBidForm(forms.ModelForm):
-    """ form for bid """
-
-    class Meta:
-        model = Bid
-        fields = ['bid']
-
-
 class Comment(models.Model):
     """ A table for comments on each listing page. """
 
     listing_id = models.ForeignKey(Listing, on_delete=models.CASCADE, related_name="comment_listing")
     commenter = models.ForeignKey(User, on_delete=models.CASCADE, related_name="comment_commenter")
     contents = models.TextField(max_length=900, verbose_name="", help_text="")
-
-
-class NewCommentForm(forms.ModelForm):
-    class Meta:
-        model = Comment
-        fields = ['contents']
 
 
 class Watchlist(models.Model):

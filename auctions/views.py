@@ -16,6 +16,7 @@ from django.forms import ModelForm, Textarea
 from django.views.generic import CreateView, ListView, DetailView, UpdateView
 
 from .models import *
+from .forms import *
 from .utils import *
 
 
@@ -161,10 +162,7 @@ def listing(request, pk):
 
     current_price = query_price(pk)
     high_bidder = query_high_bidder(pk)
-
-    # Number of bids
     bid_count = Bid.objects.filter(listing_id=pk).count()
-    # Comments
     comments = Comment.objects.filter(listing_id=pk)
 
     return render(request, "auctions/listing.html", {
@@ -217,7 +215,7 @@ def close_auction_view(request, pk):
 
 def watchlist(request):
     """ Show summary page for items being watched """
-    
+
     return render(request, "auctions/watchlist.html", {
         "watches": Watchlist.objects.all()
     })
