@@ -1,10 +1,118 @@
 :root {
   --pinky: #ff6666;
   --red:#ff0000;
+  --nav-background: rgba(171, 139, 36, 0.9);
+  --title-font: Cambria ,Georgia, serif;
+  --title-font-color: #0e2578;
+  --text-font: font-family: "Arial Narrow", Arial, sans-serif;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+/* navigation styles start here */
+header {
+  background: var(--nav-background);
+  text-align: center;
+  position: fixed;
+  z-index: 999; /* insure it stays way on top */
+  width: 100%;
+}
+
+.nav-toggle {
+  display: none;
+}
+
+.nav-toggle-label {
+  position: absolute;
+  top: 0;
+  left: 0;
+  margin-left: 1em;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.nav-toggle-label span,
+.nav-toggle-label span::before,
+.nav-toggle-label span::after {
+  display: block;
+  background: white;
+  height: 2px;
+  width: 2em;
+  border-radius:2px;
+  position: relative;
+}
+
+.nav-toggle-label span::before,
+.nav-toggle-label span::after {
+  content: '';
+  position: absolute;
+}
+
+.nav-toggle-label span::before {
+  bottom: 7px;
+}
+
+.nav-toggle-label span::after {
+  top: 7px;
+}
+
+nav {
+  background: var(--nav-background);
+  position: absolute;
+  text-align: left;
+  top: 100%;
+  left:0;
+  transform: scale(1, 0);
+  transform-origin: top;
+  transition: transform 400ms ease-in-out;
+}
+
+nav ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+nav li {
+  margin-bottom: 1em;
+  margin-left: 1em;
+}
+
+nav a {
+  font-size: 1rem;
+  font-family: var(--text-font);
+  text-transform: uppercase;
+  opacity: 0;
+  transition: opacity 150ms ease-in-out;
+  color: white;
+}
+
+.nav-toggle:checked ~ nav {
+  transform: scale(1, 1);
+  transition: opacity 250ms ease-in-out 250ms;
+}
+
+.nav-toggle:checked ~ nav a {
+  opacity: 1;
 }
 
 body {
-    padding: 10px;
+  margin: 0;
+  font-family: var(--text-font)
+}
+
+.under-nav {
+  height: 6rem;
+}
+
+.title {
+  margin-left: 1em;
+}
+
+.content {
 }
 
 link, li {
@@ -13,6 +121,8 @@ link, li {
 
 a {
   color: DimGrey;
+  font-family: var(--text-font)
+  text-decoration: none;
 }
 
 a:hover {
@@ -21,12 +131,30 @@ a:hover {
 
 div p {
   margin-top: 0;
-  margin-bottom: 0.5em;
+  margin-bottom: 0.4em;
 }
 
 h1, h2, h3, h4 {
-  font-family: Palatino, "Palatino Linotype", "Palatino LT STD", "Book Antiqua", Georgia, serif;
+  color; var(--title-font-color);
+  font-family: var(--title-font);
+  margin-bottom: 0;
 }
+
+button {
+  margin-bottom: .5em;
+}
+
+.watch-button {
+  font-size: .8em;
+  height: 2em;
+  margin-bottom: 1em;
+  margin-top: 0;
+}
+
+.name-section {
+  margin-bottom: .5em;
+}
+
 
 .article-title {
   color: #444444;
@@ -35,16 +163,35 @@ h1, h2, h3, h4 {
 .content-section {
   background: #ffffff;
   border: 1px solid #dddddd;
-  border-radius: .2em;
+  border-radius: .5em;
   padding: .5em;
-  margin-bottom: 1em;
+  margin: 1em;
+  display: flex;
+}
+
+.bid-section {
+  border: 1px solid #dddddd;
+  border-radius: .5em;
+  padding: .5em;
+  margin: 1em;
+}
+
+.comment-section {
+  border: 1px solid #dddddd;
+  border-radius: .5em;
+  padding: .5em;
+  margin: 1em;
+}
+
+.comment-section form, li {
+  margin: 1em;
 }
 
 .index-image {
   border-radius: 1em;
-  height: 65px;
-  width: 65px;
-  margin-right: 16px;
+  height: 8em;
+  width: 8em;
+  margin-right: 3em;
 }
 
 .listing-image {
@@ -61,4 +208,63 @@ h1, h2, h3, h4 {
 
 .warn-button:hover {
   background-color: var(--red);
+}
+
+/* Settings for larger screens */
+@media screen and (min-width: 800px) {
+  .nav-toggle-label {
+    display: none;
+  }
+
+  header {
+    display: grid;
+    grid-template-columns: 1fr auto minmax(700px, 3fr) 1fr;
+  }
+
+  .logo {
+    grid-column: 2 / 3;
+  }
+
+  nav {
+    all: unset;
+    grid-column: 3 / 4;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+  }
+
+  nav a {
+    font-family: "Arial Narrow", Arial, sans-serif;
+    text-decoration: none;
+    color: white;
+    opacity: 1;
+    position: relative;
+  }
+
+  nav ul {
+    display: flex;
+  }
+
+  nav li {
+    margin-left: 2.2em;
+    margin-bottom: 0;
+  }
+
+  /* Overline */
+  nav a::before {
+    content: '';
+    display: block;
+    height: 5px;
+    background: black;
+    position: absolute;
+    top: -.75em;
+    left: 0;
+    right: 0;
+    transform: scale(0,1);
+    transition: transform ease-in-out 250ms;
+  }
+
+  nav a:hover::before {
+    transform: scale(1,1);
+  }
 }

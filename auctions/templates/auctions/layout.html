@@ -4,46 +4,40 @@
 <html lang="en">
     <head>
         <title>{% block title %}Auctions{% endblock %}</title>
+
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
         <link href="{% static 'auctions/styles.css' %}" rel="stylesheet">
     </head>
     <body>
-        <h1>Auctions</h1>
-        <div>
+      <header>
+        <!-- Navbar tutorial: https://www.youtube.com/watch?v=8QKOaTYvYUA -->
+        <h1 class="logo">Auctions</h1>
+        <input type="checkbox" id="nav-toggle" class="nav-toggle">
+        <nav>
+          <ul>
+            <li><a class="nav-link" href="{% url 'index' %}">Active Listings</a></li>
+            <li><a class="nav-link" href="{% url 'categories-view' %}">Categories</a></li>
             {% if user.is_authenticated %}
-                Signed in as <strong>{{ user.username }}</strong>.
+                <li><a class="nav-link" href="{% url 'listing-create' %}">Create</a></li>
+                <li><a class="nav-link" href="{% url 'watchlist-view' %}">Watchlist</a></li>
+                <li><a class="nav-link" href="{% url 'logout' %}">Log Out</a></li>
             {% else %}
-                Not signed in.
+                <li><a class="nav-link" href="{% url 'login' %}">Log In</a></li>
+                <li><a class="nav-link" href="{% url 'register' %}">Register</a></li>
             {% endif %}
-        </div>
-        <ul class="nav">
-            <li class="nav-item">
-                <a class="nav-link" href="{% url 'index' %}">Active Listings</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{% url 'categories-view' %}">Categories</a>
-            </li>
-            {% if user.is_authenticated %}
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'listing-create' %}">Create</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="{% url 'watchlist-view' %}">Watchlist</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'logout' %}">Log Out</a>
-                </li>
-            {% else %}
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'login' %}">Log In</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'register' %}">Register</a>
-                </li>
-            {% endif %}
-        </ul>
-        <hr>
+          </ul>
+        </nav>
+        <label for="nav-toggle" class="nav-toggle-label">
+          <span></span>
+        </label>
+      </header>
+      <div class="under-nav"></div>
+      <div class="content">
         {% block body %}
         {% endblock %}
+      </div>
+      <footer>
+      </footer>
     </body>
 </html>

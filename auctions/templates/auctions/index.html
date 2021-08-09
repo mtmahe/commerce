@@ -1,7 +1,9 @@
 {% extends "auctions/layout.html" %}
 
 {% block body %}
-    <h2>Active Listings</h2>
+    <div class="title">
+      <h2>Active Listings</h2>
+    </div>
     {% for listing in listings %}
       <article class="media content-section">
         <img class="index-image align-self-center" src="{{ listing.image_url }}" alt="Item image.">

@@ -56,7 +56,7 @@ def login_view(request):
         return render(request, "auctions/login.html")
 
 
-@login_required()
+@login_required
 def logout_view(request):
     logout(request)
     return HttpResponseRedirect(reverse("index"))
@@ -88,7 +88,7 @@ def register(request):
     else:
         return render(request, "auctions/register.html")
 
-
+@login_required
 def listing(request, pk):
     """ Show the listing. If owned, can close. If open, can bid or comment.
 
@@ -213,6 +213,7 @@ def close_auction_view(request, pk):
     })
 
 
+@login_required
 def watchlist(request):
     """ Show summary page for items being watched """
 

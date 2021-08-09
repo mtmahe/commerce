@@ -11,22 +11,23 @@
   <article class="media content-section">
     <img class="listing-image" src="{{ listing.image_url }}" alt="Item image.">
     <div class="media-body listing-body">
-      <h2 class="listing-title">{{ listing.title }}</h2>
+      <div class="name-section"><small class="name-section">Posted by: {{ listing.owner }}</small></div>
+      <h1 class="listing-title">{{ listing.title }}</h1>
       <!-- add to watchlist -->
-      {% if request.user.is_authenticated and listing.active %}
+      {% if request.user.is_authenticated and listing.active and not listing.owner == user %}
         <form action="" method="post">
           {% csrf_token %}
-          <button type="submit" name="watch-button">Watchlist</button>
+          <button class="watch-button" type="submit" name="watch-button">Watchlist</button>
         </form>
       {% endif %}
       <p class="listing-description">{{ listing.description }}</p>
-      <strong>Current Bid: {{ current_price }}</strong>
-      <p>Bids so far: {{ bid_count }}</p>
     </div>
   </article>
 
   <!-- bid or close bid section -->
-  <div class="content-section">
+  <div class="bid-section">
+    <strong>Current Bid: {{ current_price }}</strong>
+    <p>Bids so far: {{ bid_count }}</p>
     {% if listing.active %}
       {% if listing.owner == user %}
         <a class="btn btn-danger" href="../../listing/{{ listing.pk }}/close">Close Auction</a>
@@ -47,7 +48,7 @@
 
   <!-- Comments section -->
   {% if listing.active %}
-    <div class="content-section">
+    <div class="comment-section">
       <div>
         {% for comment in comments %}
           <article class="content-section">
@@ -59,15 +60,15 @@
             </div>
           </article>
         {% empty %}
-          Be the first to comment!
+          <p>Be the first to comment!</p>
         {% endfor %}
       </div>
       <div>
         New comment:
         <form action="" method="post">
           {% csrf_token %}
-          {{ newCommentForm }}
-          <input type="submit" name="submit-comment" value="Comment">
+          {{ newCommentForm.as_ul }}
+          <input type="submit" name="submit-comment" value="Post Comment">
         </form>
       </div>
     </div>
